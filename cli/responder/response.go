@@ -210,13 +210,7 @@ func (r R) getSortedValidResponses() []rune {
 
 // PrintHelp prints the help message.
 func (r R) PrintHelp() {
-	twc, err := twrap.NewTWConf()
-	if err != nil {
-		fmt.Fprintf(os.Stderr,
-			"Couldn't create the text wrapper to display the help message: %v",
-			err)
-		os.Exit(1)
-	}
+	twc := twrap.NewTWConfOrPanic()
 
 	twc.Println() //nolint: errcheck
 	twc.Wrap("Enter one of:", r.indent)
