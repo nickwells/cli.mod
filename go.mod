@@ -4,6 +4,6 @@ go 1.13
 
 require (
 	github.com/nickwells/twrap.mod v1.3.0
-	golang.org/x/crypto v0.0.0-20191029031824-8986dd9e96cf
-	golang.org/x/sys v0.0.0-20191029155521-f43be2a4598c // indirect
+	golang.org/x/crypto v0.0.0-20191128160524-b544559bb6d1
+	golang.org/x/sys v0.0.0-20191128015809-6d18c012aee9 // indirect
 )
