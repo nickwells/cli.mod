@@ -96,7 +96,7 @@ func SetIndents(indentFirst, indent int) RespOptFunc {
 	}
 }
 
-// NewOrPanic ...
+// NewOrPanic creates a new responder and panics if there are any errors
 func NewOrPanic(
 	prompt string,
 	responses map[rune]string,
