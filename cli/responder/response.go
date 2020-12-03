@@ -10,7 +10,7 @@ import (
 	"unicode"
 
 	"github.com/nickwells/twrap.mod/twrap"
-	"golang.org/x/crypto/ssh/terminal"
+	"golang.org/x/term"
 )
 
 const helpRune = '?'
@@ -297,9 +297,9 @@ func (r R) GetResponse() (response rune, err error) {
 
 // getRune gets the response and performs any mappings and display of help
 func (r R) getRune() (rune, error) {
-	state, err := terminal.MakeRaw(r.fd)
+	state, err := term.MakeRaw(r.fd)
 	if err == nil {
-		defer terminal.Restore(r.fd, state) //nolint: errcheck
+		defer term.Restore(r.fd, state) //nolint: errcheck
 	}
 	resp, _, err := r.rdr.ReadRune()
 	return resp, err
