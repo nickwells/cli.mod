@@ -3,7 +3,7 @@ module github.com/nickwells/cli.mod
 go 1.13
 
 require (
-	github.com/nickwells/twrap.mod v1.4.9
-	golang.org/x/sys v0.0.0-20201211090839-8ad439b19e0f // indirect
+	github.com/nickwells/twrap.mod v1.4.10
+	golang.org/x/sys v0.0.0-20201214210602-f9fddec55a1e // indirect
 	golang.org/x/term v0.0.0-20201210144234-2321bbc49cbf
 )
