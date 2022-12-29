@@ -3,6 +3,7 @@ package responder
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"os"
 	"sort"
 	"strings"
@@ -281,7 +282,7 @@ func (r R) GetResponse() (response rune, err error) {
 		}
 		i++
 
-		if err == nil {
+		if err == nil || err == io.EOF {
 			return
 		}
 
@@ -290,8 +291,7 @@ func (r R) GetResponse() (response rune, err error) {
 		}
 
 		fmt.Fprintln(os.Stderr)
-		fmt.Fprintln(os.Stderr,
-			prefix+"    "+err.Error())
+		fmt.Fprintln(os.Stderr, prefix+"    "+err.Error())
 	}
 }
 
@@ -309,7 +309,7 @@ func (r R) getRune() (rune, error) {
 func (r R) getResp() (rune, error) {
 	resp, err := r.getRune()
 	if err != nil {
-		return unicode.ReplacementChar, fmt.Errorf("bad response: %w", err)
+		return unicode.ReplacementChar, err
 	}
 	if r.hasDflt && unicode.IsSpace(resp) {
 		resp = r.dflt
@@ -318,7 +318,7 @@ func (r R) getResp() (rune, error) {
 
 		if _, ok := r.validResps[resp]; !ok {
 			return unicode.ReplacementChar,
-				fmt.Errorf("bad response: %c", resp)
+				fmt.Errorf("Bad response: %c", resp)
 		}
 	}
 
