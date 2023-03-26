@@ -1,7 +1,7 @@
-github.com/nickwells/testhelper.mod/v2 v2.1.0 h1:dvY6icCWX8Lx5MOt01P4aC/0olap8ugI44La0W1vags=
-github.com/nickwells/twrap.mod v1.4.21 h1:igPW+JepLeldXbttb9ubQXf6ztiNSUnbEEoh2foBXFM=
-github.com/nickwells/twrap.mod v1.4.21/go.mod h1:pdRmT2cXwfPDFUQrWmpaAvmf8nrR4XpIt10Jkx5tB8k=
-golang.org/x/exp v0.0.0-20230315142452-642cacee5cc0 h1:pVgRXcIictcr+lBQIFeiwuwtDIs4eL21OuM9nyAADmo=
+github.com/nickwells/testhelper.mod/v2 v2.1.2 h1:GU0QzKvOJZ3nKPtSSyegao4Jw2IyjDysgi5zeKobm1w=
+github.com/nickwells/twrap.mod v1.4.22 h1:eIq/sxkXPza/PNUSIyEYJU/NGl79KsIz3AyVnAKNofc=
+github.com/nickwells/twrap.mod v1.4.22/go.mod h1:K1ot0Gq5sn/HNABrueQqyo2opXTits7fa9WMGvS8MmI=
+golang.org/x/exp v0.0.0-20230321023759-10a507213a29 h1:ooxPy7fPvB4kwsA2h+iBNHkAbp/4JxTSwCmvdjEYmug=
 golang.org/x/sys v0.6.0 h1:MVltZSvRTcU2ljQOhs94SXPftV6DCNnZViHeQps87pQ=
 golang.org/x/sys v0.6.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/term v0.6.0 h1:clScbb1cHjoCkyRbWwBEUZ5H/tIFu5TAXIqaZD0Gcjw=
