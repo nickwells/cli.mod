@@ -178,9 +178,9 @@ func (r R) PrintValidResponses() {
 	for _, c := range responses {
 		if r.hasDflt && c == r.dflt {
 			continue
-		} else {
-			fmt.Printf("%s%c", sep, c)
 		}
+
+		fmt.Printf("%s%c", sep, c)
 		sep = "/"
 	}
 	fmt.Printf("%s%c): ", sep, helpRune)
