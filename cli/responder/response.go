@@ -14,7 +14,18 @@ import (
 	"golang.org/x/term"
 )
 
-const helpRune = '?'
+// Responder describes the methods offered to get a response
+type Responder interface {
+	GetResponse() (rune, error)
+	GetResponseOrDie() rune
+	GetResponseIndent(int, int) (rune, error)
+	GetResponseIndentOrDie(int, int) rune
+}
+
+const (
+	helpRune      = '?'
+	errExitStatus = 1
+)
 
 // R holds the details needed to collect and validate a response
 type R struct {
@@ -211,10 +222,15 @@ func (r R) getSortedValidResponses() []rune {
 
 // PrintHelp prints the help message.
 func (r R) PrintHelp() {
+	r.PrintHelpIndent(r.indent)
+}
+
+// PrintHelpIndent prints the help message.
+func (r R) PrintHelpIndent(indent int) {
 	twc := twrap.NewTWConfOrPanic()
 
 	twc.Println() //nolint: errcheck
-	twc.Wrap("Enter one of:", r.indent)
+	twc.Wrap("Enter one of:", indent)
 
 	keys := r.getSortedValidResponses()
 
@@ -224,7 +240,7 @@ func (r R) PrintHelp() {
 		twc.WrapPrefixed(
 			fmt.Sprintf(charFmt, r.dflt),
 			fmt.Sprintf("%s (this is the default)", r.validResps[r.dflt]),
-			r.indent+4)
+			indent+4)
 	}
 	for _, k := range keys {
 		if r.hasDflt && r.dflt == k {
@@ -233,26 +249,32 @@ func (r R) PrintHelp() {
 		twc.WrapPrefixed(
 			fmt.Sprintf(charFmt, k),
 			r.validResps[k],
-			r.indent+4)
+			indent+4)
 	}
 	twc.WrapPrefixed(
 		fmt.Sprintf(charFmt, helpRune),
 		"to show this message\n",
-		r.indent+4)
-	twc.Wrap("to select the default just enter whitespace"+
+		indent+4)
+	twc.Wrap("to select the default either enter the character or whitespace"+
 		" (a space, tab or return character)",
-		r.indent)
+		indent)
 }
 
 // GetResponseOrDie calls GetResponse to get the response but if there is an
 // error it will print it and exit with status 1.
 func (r R) GetResponseOrDie() rune {
-	resp, err := r.GetResponse()
+	return r.GetResponseIndentOrDie(r.indentFirst, r.indent)
+}
+
+// GetResponseIndentOrDie calls GetResponseIndent to get the response but if
+// there is an error it will print it and exit with status 1.
+func (r R) GetResponseIndentOrDie(first, second int) rune {
+	resp, err := r.GetResponseIndent(first, second)
 	if err != nil {
 		fmt.Fprintln(os.Stderr)
 		fmt.Fprintln(os.Stderr,
 			strings.Repeat(" ", r.indent)+"    "+err.Error())
-		os.Exit(1)
+		os.Exit(errExitStatus)
 	}
 
 	return resp
@@ -266,10 +288,16 @@ func (r R) GetResponseOrDie() rune {
 // If an error is detected the response returned will be the unicode
 // ReplacementChar.
 func (r R) GetResponse() (response rune, err error) {
+	return r.GetResponseIndent(r.indentFirst, r.indent)
+}
+
+// GetResponseIndent behaves as GetResponse but the indents are taken from
+// the parameters rather than the responder.
+func (r R) GetResponseIndent(first, second int) (response rune, err error) {
 	i := 0
 
-	prefix := strings.Repeat(" ", r.indentFirst)
-	secondPrefix := strings.Repeat(" ", r.indent)
+	prefix := strings.Repeat(" ", first)
+	secondPrefix := strings.Repeat(" ", second)
 	for {
 		fmt.Print(prefix)
 		prefix = secondPrefix
@@ -277,7 +305,7 @@ func (r R) GetResponse() (response rune, err error) {
 
 		response, err = r.getResp()
 		if response == helpRune {
-			r.PrintHelp()
+			r.PrintHelpIndent(second)
 			continue
 		}
 		i++
