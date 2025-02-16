@@ -19,6 +19,7 @@ func Example() {
 
 	for {
 		response := r.GetResponseOrDie()
+
 		fmt.Println()
 
 		switch response {

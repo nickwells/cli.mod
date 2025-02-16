@@ -22,6 +22,7 @@ func (fr FixedResponse) GetResponseOrDie() rune {
 	if fr.Err != nil {
 		os.Exit(errExitStatus)
 	}
+
 	return fr.Response
 }
 

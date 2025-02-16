@@ -69,16 +69,16 @@ func SetDefault(d rune) RespOptFunc {
 // SetMaxReprompts sets the maximum number of times that the user
 // will be reprompted for a valid response before reporting an error. The
 // value must be greater than 0
-func SetMaxReprompts(max int) RespOptFunc {
+func SetMaxReprompts(maximum int) RespOptFunc {
 	return func(r *R) error {
-		if max <= 0 {
+		if maximum <= 0 {
 			return fmt.Errorf(
 				"SetMaxReprompts: the maximum number of"+
 					" reprompts (%d) must be greater than 0",
-				max)
+				maximum)
 		}
 
-		r.maxReprompts = max
+		r.maxReprompts = maximum
 		r.limitPrompts = true
 
 		return nil
@@ -94,6 +94,7 @@ func SetIndents(indentFirst, indent int) RespOptFunc {
 					" greater than or equal to 0",
 				indent)
 		}
+
 		if indentFirst < 0 {
 			return fmt.Errorf(
 				"SetIndents: the first indent (%d) must be"+
@@ -118,6 +119,7 @@ func NewOrPanic(
 	if err != nil {
 		panic(err)
 	}
+
 	return r
 }
 
@@ -145,12 +147,14 @@ func New(
 					"only lowercase responses are allowed - '%c' is uppercase",
 					v)
 		}
+
 		if unicode.IsSpace(v) {
 			return nil,
 				fmt.Errorf(
 					"a whitespace character is not an allowed response" +
 						" - it is used to select the default response")
 		}
+
 		if v == helpRune {
 			return nil,
 				fmt.Errorf(
@@ -182,18 +186,23 @@ func (r R) PrintValidResponses() {
 	responses := r.getSortedValidResponses()
 
 	sep := ""
+
 	if r.hasDflt {
 		fmt.Printf("[%c]", r.dflt)
+
 		sep = "/"
 	}
+
 	for _, c := range responses {
 		if r.hasDflt && c == r.dflt {
 			continue
 		}
 
 		fmt.Printf("%s%c", sep, c)
+
 		sep = "/"
 	}
+
 	fmt.Printf("%s%c): ", sep, helpRune)
 }
 
@@ -236,25 +245,30 @@ func (r R) PrintHelpIndent(indent int) {
 
 	const charFmt = "%c  "
 
+	const listIndent = 4
+
 	if r.hasDflt {
 		twc.WrapPrefixed(
 			fmt.Sprintf(charFmt, r.dflt),
 			fmt.Sprintf("%s (this is the default)", r.validResps[r.dflt]),
-			indent+4)
+			indent+listIndent)
 	}
+
 	for _, k := range keys {
 		if r.hasDflt && r.dflt == k {
 			continue
 		}
+
 		twc.WrapPrefixed(
 			fmt.Sprintf(charFmt, k),
 			r.validResps[k],
-			indent+4)
+			indent+listIndent)
 	}
+
 	twc.WrapPrefixed(
 		fmt.Sprintf(charFmt, helpRune),
 		"to show this message\n",
-		indent+4)
+		indent+listIndent)
 	twc.Wrap("to select the default either enter the character or whitespace"+
 		" (a space, tab or return character)",
 		indent)
@@ -298,9 +312,12 @@ func (r R) GetResponseIndent(first, second int) (response rune, err error) {
 
 	prefix := strings.Repeat(" ", first)
 	secondPrefix := strings.Repeat(" ", second)
+
 	for {
 		fmt.Print(prefix)
+
 		prefix = secondPrefix
+
 		r.PrintPrompt()
 
 		response, err = r.getResp()
@@ -308,6 +325,7 @@ func (r R) GetResponseIndent(first, second int) (response rune, err error) {
 			r.PrintHelpIndent(second)
 			continue
 		}
+
 		i++
 
 		if err == nil || err == io.EOF {
@@ -329,7 +347,9 @@ func (r R) getRune() (rune, error) {
 	if err == nil {
 		defer term.Restore(r.fd, state) //nolint: errcheck
 	}
+
 	resp, _, err := r.rdr.ReadRune()
+
 	return resp, err
 }
 
@@ -339,6 +359,7 @@ func (r R) getResp() (rune, error) {
 	if err != nil {
 		return unicode.ReplacementChar, err
 	}
+
 	if r.hasDflt && unicode.IsSpace(resp) {
 		resp = r.dflt
 	} else if resp != helpRune {
