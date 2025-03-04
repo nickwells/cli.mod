@@ -238,7 +238,7 @@ func (r R) PrintHelp() {
 func (r R) PrintHelpIndent(indent int) {
 	twc := twrap.NewTWConfOrPanic()
 
-	twc.Println() //nolint: errcheck
+	twc.Println() //nolint:errcheck
 	twc.Wrap("Enter one of:", indent)
 
 	keys := r.getSortedValidResponses()
@@ -345,7 +345,7 @@ func (r R) GetResponseIndent(first, second int) (response rune, err error) {
 func (r R) getRune() (rune, error) {
 	state, err := term.MakeRaw(r.fd)
 	if err == nil {
-		defer term.Restore(r.fd, state) //nolint: errcheck
+		defer term.Restore(r.fd, state) //nolint:errcheck
 	}
 
 	resp, _, err := r.rdr.ReadRune()
