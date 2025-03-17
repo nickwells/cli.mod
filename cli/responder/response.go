@@ -4,8 +4,9 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"maps"
 	"os"
-	"sort"
+	"slices"
 	"strings"
 	"syscall"
 	"unicode"
@@ -216,17 +217,7 @@ func (r R) PrintPrompt() {
 
 // getSortedValidResponses gets the valid responses in lexicographic order
 func (r R) getSortedValidResponses() []rune {
-	keys := make([]rune, 0, len(r.validResps))
-
-	for k := range r.validResps {
-		keys = append(keys, k)
-	}
-
-	sort.Slice(keys, func(i, j int) bool {
-		return keys[i] < keys[j]
-	})
-
-	return keys
+	return slices.Sorted(maps.Keys(r.validResps))
 }
 
 // PrintHelp prints the help message.
