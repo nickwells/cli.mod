@@ -17,6 +17,7 @@ func Example() {
 		responder.SetDefault('y'),
 	)
 
+ResponseLoop:
 	for {
 		response := r.GetResponseOrDie()
 
@@ -28,7 +29,7 @@ func Example() {
 		case 'n':
 			fmt.Println("No.")
 		case 'q':
-			break
+			break ResponseLoop
 		}
 	}
 }

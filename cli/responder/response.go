@@ -358,7 +358,7 @@ func (r R) getResp() (rune, error) {
 
 		if _, ok := r.validResps[resp]; !ok {
 			return unicode.ReplacementChar,
-				fmt.Errorf("Bad response: %c", resp)
+				fmt.Errorf("bad response: %c", resp)
 		}
 	}
 
