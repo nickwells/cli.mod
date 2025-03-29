@@ -229,7 +229,7 @@ func (r R) PrintHelp() {
 func (r R) PrintHelpIndent(indent int) {
 	twc := twrap.NewTWConfOrPanic()
 
-	twc.Println() //nolint:errcheck
+	twc.Println()
 	twc.Wrap("Enter one of:", indent)
 
 	keys := r.getSortedValidResponses()
