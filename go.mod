@@ -1,6 +1,6 @@
 module github.com/nickwells/cli.mod
 
-go 1.24.0
+go 1.26.0
 
 require (
 	github.com/nickwells/twrap.mod v1.5.12
